@@ -161,4 +161,56 @@ AI-8Puzzle-Visualizer/
 4. MDN Web Docs — CSS Transforms and Transitions — <https://developer.mozilla.org/>
 5. Solvability of the 8-puzzle (inversion parity) — Johnson & Story, "Notes on the 15 puzzle", *American Journal of Mathematics* 2, 1879.
 
-_AI assistance:_ add a short note here describing any AI tools you used and how, as required by the academic-integrity clause.
+## Screenshots
+
+### 1. Project Structure
+![Project Structure](screenshots/01-project-structure.png)
+
+### 2. Local Server Running
+![Local Server](screenshots/02-server-running.png)
+
+### 3. Homepage
+![Homepage - Main View](screenshots/03-homepage1.png)
+
+![Homepage - Project Details](screenshots/03-homepage2.png)
+
+### 4. UCS Solver
+![UCS Solver - Initial State](screenshots/04-ucs-solver-before.png)
+
+![UCS Solver - Working View](screenshots/04-ucs-solver-after.png)
+
+### 5. UCS Solution Summary
+![UCS Solution](screenshots/05-ucs-solution.png)
+
+### 6. Live Search Process
+![Search Process](screenshots/06-search-process.png)
+
+### 7. Algorithm Comparison
+![Algorithm Comparison](screenshots/07-algorithm-comparison.png)
+
+### 8. Heuristic Settings
+![Misplaced Tiles Heuristic](screenshots/08-comparison-settings-misplaced.png)
+
+### 9. Random Puzzle Difficulty Levels
+**Easy**
+![Easy Puzzle](screenshots/09-random-puzzles-easy.png)
+
+**Medium**
+![Medium Puzzle](screenshots/09-random-puzzles-medium.png)
+
+**Hard**
+![Hard Puzzle](screenshots/09-random-puzzles-hard.png)
+
+### 10. Tile-Weighted Cost Comparison
+![Tile-Weighted Cost](screenshots/10-tile-weighted-cost.png)
+
+### 11. Search Algorithms Information
+![Algorithms Page](screenshots/11-algorithms-page.png)
+
+### 12. Interactive Controls
+![Interactive Controls](screenshots/12-Interactive-controls.png)
+
+## Project Links
+
+- **GitHub Repository:** https://github.com/dev-sathasivam18/AI-8Puzzle-Visualizer
+- **Live Website:** https://dev-sathasivam18.github.io/AI-8Puzzle-Visualizer/
