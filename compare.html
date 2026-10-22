@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparison | 8-Puzzle Visualizer</title>
+  <meta name="description" content="Compare BFS, DFS, DLS, IDDLS, UCS, GBFS and A* on the same 8-Puzzle instance.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="site-nav"></div>
+
+  <main class="container-xl py-4">
+    <h1 class="h3 mb-1">Algorithm comparison</h1>
+    <p class="text-body-secondary">All algorithms are run on the <b>same puzzle instance</b> (the one currently loaded in the Solver).
+      Uniform Cost Search is the algorithm implemented and visualised in this project; the other rows come from small reference implementations used only for this benchmark.</p>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-header section">Puzzle instance</div>
+          <div class="card-body">
+            <div class="d-flex justify-content-around align-items-center mb-3">
+              <div class="text-center"><div class="small fw-semibold mb-1">Initial</div><div id="cmpInit"></div></div>
+              <div class="fs-3 text-body-secondary">&rarr;</div>
+              <div class="text-center"><div class="small fw-semibold mb-1">Goal</div><div id="cmpGoal"></div></div>
+            </div>
+            <div id="cmpInfo" class="small text-body-secondary mb-3"></div>
+            <div class="input-group input-group-sm mb-2">
+              <select id="cmpDifficulty" class="form-select" aria-label="Difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium" selected>Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+              <button id="cmpRandom" class="btn btn-success" type="button">New random puzzle</button>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm w-100" href="solver.html">Edit puzzle in Solver</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card h-100">
+          <div class="card-header section">Settings</div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="form-label small fw-semibold" for="cmpCost">Step-cost model</label>
+                <select id="cmpCost" class="form-select form-select-sm">
+                  <option value="unit">Unit cost (every move = 1)</option>
+                  <option value="tile">Tile-weighted (tile n costs n)</option>
+                </select>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label small fw-semibold" for="cmpHeur">Heuristic for GBFS &amp; A*</label>
+                <select id="cmpHeur" class="form-select form-select-sm">
+                  <option value="manhattan">Manhattan Distance</option>
+                  <option value="misplaced">Misplaced Tiles</option>
+                </select>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label small fw-semibold" for="cmpLimit">DLS depth limit</label>
+                <input id="cmpLimit" type="number" min="1" max="40" value="10" class="form-control form-control-sm">
+              </div>
+              <div class="col-sm-6 d-flex align-items-end">
+                <button id="cmpRun" class="btn btn-primary w-100" type="button">&#9654; Run comparison</button>
+              </div>
+            </div>
+            <p class="small text-body-secondary mt-3 mb-0">
+              DLS and IDDLS use tree search and are capped at 800,000 expansions, so on hard puzzles they may report
+              <i>No (budget)</i>. Times are measured in your browser (best of up to 3 runs for fast algorithms).
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cmpAlert"></div>
+
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 cmp-table" id="cmpTable">
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Solution found</th>
+              <th class="text-end">Nodes generated</th>
+              <th class="text-end">Nodes expanded</th>
+              <th class="text-end">Moves</th>
+              <th class="text-end">Path cost</th>
+              <th class="text-end">Max depth</th>
+              <th class="text-end">Time</th>
+              <th>Memory (approx.)</th>
+            </tr>
+          </thead>
+          <tbody id="cmpBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="small text-body-secondary mt-3">
+      <b>How to read it.</b> <i>Generated</i> counts every successor created; <i>expanded</i> counts nodes whose successors were produced.
+      <i>Memory</i> is an estimate (peak nodes held &times; 64 bytes) labelled Low (&lt; 50 KB), Medium (&lt; 1 MB) or High.
+      <span class="best">Green</span> marks the best value among the algorithms that found a solution.
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/heap.js"></script>
+  <script src="js/puzzle.js"></script>
+  <script src="js/ucs.js"></script>
+  <script src="js/reference-algorithms.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/compare.js"></script>
+</body>
+</html>

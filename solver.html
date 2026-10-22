@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solver | 8-Puzzle Visualizer</title>
+  <meta name="description" content="Interactive Uniform Cost Search visualiser for the 8-Puzzle problem.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="site-nav"></div>
+
+  <main class="container-xl py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+      <div>
+        <h1 class="h3 mb-1">Uniform Cost Search Solver</h1>
+        <p class="text-body-secondary mb-0">Set up a puzzle, press <b>Run</b>, and watch UCS expand the cheapest node first.</p>
+      </div>
+      <span class="badge badge-soft fs-6">Algorithm 5 &middot; UCS</span>
+    </div>
+
+    <div class="row g-3">
+      <!-- ============ LEFT: puzzle input + assigned method ============ -->
+      <div class="col-lg-4">
+        <div class="card mb-3">
+          <div class="card-header section"><span class="step-num">1</span>Puzzle input</div>
+          <div class="card-body">
+            <div class="row g-3 mb-2">
+              <div class="col-6 text-center">
+                <div class="small fw-semibold mb-1">Initial state</div>
+                <div id="initGrid" class="grid-input"></div>
+              </div>
+              <div class="col-6 text-center">
+                <div class="small fw-semibold mb-1">Goal state</div>
+                <div id="goalGrid" class="grid-input"></div>
+              </div>
+            </div>
+            <p class="small text-body-secondary">Type <b>1&ndash;8</b>; use <b>_</b> (or 0 / space) for the blank.</p>
+
+            <div class="d-flex flex-wrap gap-2 mb-2">
+              <button id="btnApply" class="btn btn-primary btn-sm" type="button">Apply puzzle</button>
+              <button id="btnExample" class="btn btn-outline-secondary btn-sm" type="button">Load assignment example</button>
+            </div>
+
+            <hr>
+            <div class="small fw-semibold mb-1">Random solvable puzzle</div>
+            <div class="input-group input-group-sm">
+              <select id="difficulty" class="form-select" aria-label="Difficulty">
+                <option value="easy">Easy (&asymp; 7 moves)</option>
+                <option value="medium" selected>Medium (&asymp; 15 moves)</option>
+                <option value="hard">Hard (any solvable board)</option>
+              </select>
+              <button id="btnRandom" class="btn btn-success" type="button">Generate Random Puzzle</button>
+            </div>
+
+            <div id="puzzleMsg" class="small mt-3" role="status"></div>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-header section"><span class="step-num">3</span>Assigned search method</div>
+          <div class="card-body">
+            <div class="fw-semibold">Uniform Cost Search (UCS)</div>
+            <p class="small text-body-secondary mt-2 mb-0">
+              This assignment uses the allocated algorithm only. Every move has a fixed unit cost of 1,
+              so UCS always expands the frontier state with the lowest path cost g(n).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ RIGHT: visualisation ============ -->
+      <div class="col-lg-8">
+        <div class="card mb-3">
+          <div class="card-header section d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span><span class="step-num">4</span>Puzzle visualisation</span>
+            <div class="btn-group btn-group-sm" role="group" aria-label="View">
+              <button id="tabSearch" class="btn btn-outline-primary active" type="button">Search replay</button>
+              <button id="tabSolution" class="btn btn-outline-primary" type="button" disabled>Solution path</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3 align-items-center">
+              <div class="col-6 col-md-3 text-center order-2 order-md-1">
+                <div class="small fw-semibold mb-2">Initial state</div>
+                <div id="boardInit"></div>
+                <div class="small fw-semibold mt-4 mb-2">Goal state</div>
+                <div id="boardGoal"></div>
+              </div>
+              <div class="col-12 col-md-6 text-center order-1 order-md-2">
+                <div class="small fw-semibold mb-2">Current state</div>
+                <div id="boardCur"></div>
+                <div id="stepLabel" class="fw-semibold mt-3">Ready</div>
+                <div id="stepInfo" class="small text-body-secondary" aria-live="polite">Press Run to start the search.</div>
+              </div>
+              <div class="col-6 col-md-3 order-3">
+                <div class="small fw-semibold mb-2 text-center">Status</div>
+                <div id="statusBox" class="stat text-center mb-2"><div class="lbl">State</div><div class="val" id="statusVal">Idle</div></div>
+                <div class="stat text-center"><div class="lbl">Path cost g(n)</div><div class="val" id="statG">0</div></div>
+              </div>
+            </div>
+
+            <hr class="my-3">
+
+            <div class="controls d-flex flex-wrap gap-2 align-items-center">
+              <button id="btnRun" class="btn btn-primary" type="button">&#9654; Run</button>
+              <button id="btnPause" class="btn btn-warning" type="button" disabled>&#10074;&#10074; Pause</button>
+              <button id="btnResume" class="btn btn-success" type="button" disabled>&#9199; Resume</button>
+              <button id="btnPrev" class="btn btn-outline-secondary" type="button" disabled>&#9664; Previous</button>
+              <button id="btnNext" class="btn btn-outline-secondary" type="button">Next &#9654;</button>
+              <button id="btnSkip" class="btn btn-outline-secondary" type="button" disabled title="Jump to the end of the search">Skip &raquo;</button>
+              <button id="btnReset" class="btn btn-outline-danger" type="button">&#8635; Reset</button>
+              <div class="speed-wrap ms-md-auto">
+                <label for="speed" class="form-label small mb-0">Speed: <span id="speedLabel"></span></label>
+                <input id="speed" type="range" class="form-range" min="1" max="8" step="1" value="5">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SEARCH PROCESS ============ -->
+    <div class="card mb-3" id="processCard">
+      <div class="card-header section"><span class="step-num">5</span>Search process (live)</div>
+      <div class="card-body">
+        <div class="row g-2 mb-3">
+          <div class="col-6 col-md-3 col-xl"><div class="stat"><div class="lbl">Nodes generated</div><div class="val" id="sGen">1</div></div></div>
+          <div class="col-6 col-md-3 col-xl"><div class="stat"><div class="lbl">Nodes expanded</div><div class="val" id="sExp">0</div></div></div>
+          <div class="col-6 col-md-3 col-xl"><div class="stat"><div class="lbl">Frontier size</div><div class="val" id="sFr">1</div></div></div>
+          <div class="col-6 col-md-3 col-xl"><div class="stat"><div class="lbl">Explored size</div><div class="val" id="sEx">0</div></div></div>
+          <div class="col-6 col-md-3 col-xl"><div class="stat"><div class="lbl">Current depth</div><div class="val" id="sDepth">0</div></div></div>
+          <div class="col-6 col-md-3 col-xl"><div class="stat"><div class="lbl">Max depth so far</div><div class="val" id="sMax">0</div></div></div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <div class="node-box">
+              <div id="curMini"></div>
+              <div>
+                <div class="small-lbl">Current node being expanded</div>
+                <div id="curText" class="fw-semibold">&mdash;</div>
+                <div id="curMeta" class="small text-body-secondary"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="node-box">
+              <div id="parMini"></div>
+              <div>
+                <div class="small-lbl">Parent node</div>
+                <div id="parText" class="fw-semibold">&mdash;</div>
+                <div id="parMeta" class="small text-body-secondary"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <div class="fw-semibold small mb-2">Generated successor states <span class="text-body-secondary fw-normal">(children of the node being expanded)</span></div>
+          <div id="succList" class="succ-grid"><span class="small text-body-secondary">Nothing expanded yet.</span></div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <div class="fw-semibold small mb-1">Frontier / open list <span class="text-body-secondary fw-normal">&mdash; cheapest g(n) first (top 10)</span></div>
+            <div id="frontierList" class="listing border rounded"></div>
+          </div>
+          <div class="col-lg-6">
+            <div class="fw-semibold small mb-1">Explored / closed list <span class="text-body-secondary fw-normal">&mdash; most recent first</span></div>
+            <div id="exploredList" class="listing border rounded"></div>
+          </div>
+        </div>
+        <p class="small text-body-secondary mt-3 mb-0">
+          UCS uses no heuristic: it orders the frontier by f(n) = g(n) only, where g(n) is the path cost from the start.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ SUMMARY ============ -->
+    <div class="card mb-3 d-none" id="summaryCard">
+      <div class="card-header section"><span class="step-num">5</span>Solution summary</div>
+      <div class="card-body">
+        <div id="summaryMsg" class="alert py-2 mb-3"></div>
+        <div class="row g-2" id="summaryGrid"></div>
+        <div id="pathWrap" class="mt-4">
+          <div class="fw-semibold small mb-2">Final solution path <span class="text-body-secondary fw-normal">(click a step to jump to it)</span></div>
+          <div id="pathStrip" class="path-strip"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/heap.js"></script>
+  <script src="js/puzzle.js"></script>
+  <script src="js/ucs.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/solver.js"></script>
+</body>
+</html>
