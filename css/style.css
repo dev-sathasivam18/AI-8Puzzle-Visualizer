@@ -78,7 +78,11 @@ body {
   --dur: 300ms;
   --board: 300px;
   position: relative;
-  width: min(var(--board), 100%);
+  /* Keep a real square board when its flex parent has no explicit width.
+     `min(..., 100%)` was resolving against the board's own intrinsic width,
+     collapsing the small Initial/Goal previews into a few pixels. */
+  width: var(--board);
+  max-width: 100%;
   aspect-ratio: 1 / 1;
   background: var(--board-bg);
   border-radius: 16px;
