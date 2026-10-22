@@ -7,8 +7,8 @@ An interactive web application that solves the **8-Puzzle** with **Uniform Cost 
 
 | | |
 |---|---|
-| **Live site (GitHub Pages)** | `https://YOUR-USERNAME.github.io/AI-8Puzzle-Visualizer/` |
-| **Repository** | `https://github.com/YOUR-USERNAME/AI-8Puzzle-Visualizer` |
+| **Live site (GitHub Pages)** | `https://dev-sathasivam18.github.io/AI-8Puzzle-Visualizer/` |
+| **Repository** | `https://github.com/dev-sathasivam18/AI-8Puzzle-Visualizer` |
 | **Demo video** | _add your link here_ |
 
 ---
@@ -116,7 +116,7 @@ node tests/test-reference.js
 1. Create a repository named `AI-8Puzzle-Visualizer` and push this folder to the `main` branch.
 2. Repository → **Settings → Pages**.
 3. *Source:* **Deploy from a branch** → branch `main`, folder `/ (root)` → **Save**.
-4. After a minute the site is live at `https://YOUR-USERNAME.github.io/AI-8Puzzle-Visualizer/`.
+4. The deployed site is available at `https://dev-sathasivam18.github.io/AI-8Puzzle-Visualizer/`.
 
 ## Repository structure
 

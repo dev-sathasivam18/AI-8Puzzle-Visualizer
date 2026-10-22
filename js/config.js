@@ -9,5 +9,5 @@ window.SITE_CONFIG = {
   regNo: '24BCE2650',
   algorithm: 'Uniform Cost Search (UCS)',
   algorithmNo: 5,
-  repoUrl: 'https://github.com/YOUR-USERNAME/AI-8Puzzle-Visualizer' // <-- change me
+  repoUrl: 'https://github.com/dev-sathasivam18/AI-8Puzzle-Visualizer'
 };
