@@ -7,8 +7,8 @@ An interactive web application that solves the **8-Puzzle** with **Uniform Cost 
 
 | | |
 |---|---|
-| **Live site (GitHub Pages)** | `https://dev-sathasivam18.github.io/AI-8Puzzle-Visualizer/` |
-| **Repository** | `https://github.com/dev-sathasivam18/AI-8Puzzle-Visualizer` |
+| **Live site (GitHub Pages)** | [Open Live Website](https://dev-sathasivam18.github.io/AI-8Puzzle-Visualizer/) |
+| **Repository** | [View GitHub Repository](https://github.com/dev-sathasivam18/AI-8Puzzle-Visualizer) |
 | **Demo video** | [Watch the AI 8-Puzzle UCS Demo](https://drive.google.com/file/d/1Cj8UCUpOioqFBuGODV9GopRwWLdepga2/view?usp=drive_link) |
 ---
 
